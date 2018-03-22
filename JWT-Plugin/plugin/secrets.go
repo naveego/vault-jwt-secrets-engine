@@ -74,7 +74,7 @@ func (backend *JwtBackend) createSecret(ctx context.Context, storage logical.Sto
 	} else {
 		now := time.Now().UTC()
 		secretKey, _ := uuid.NewUUID()
-		salt, _ := backend.Salt()
+		salt, _ := backend.Salt(ctx)
 		key := salt.GetHMAC(secretKey.String())
 		secretEntry = &secretStorageEntry{
 			ID:           secretID.String(),
@@ -132,7 +132,7 @@ func (backend *JwtBackend) rotateSecret(ctx context.Context, storage logical.Sto
 	}
 
 	secretKey, _ := uuid.NewUUID()
-	salt, _ := backend.Salt()
+	salt, _ := backend.Salt(ctx)
 	key := salt.GetHMAC(secretKey.String())
 
 	secretEntry, err := backend.getSecretEntry(ctx, storage, roleID, secretID)

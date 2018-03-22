@@ -43,7 +43,7 @@ func Factory(ctx context.Context, conf *logical.BackendConfig) (logical.Backend,
 }
 
 // Salt create the Salt for encrypting the keys
-func (backend *JwtBackend) Salt() (*salt.Salt, error) {
+func (backend *JwtBackend) Salt(ctx context.Context) (*salt.Salt, error) {
 	backend.saltMutex.RLock()
 	if backend.salt != nil {
 		defer backend.saltMutex.RUnlock()
@@ -55,7 +55,7 @@ func (backend *JwtBackend) Salt() (*salt.Salt, error) {
 	if backend.salt != nil {
 		return backend.salt, nil
 	}
-	salt, err := salt.NewSalt(backend.view, &salt.Config{
+	salt, err := salt.NewSalt(ctx, backend.view, &salt.Config{
 		HashFunc: salt.SHA256Hash,
 		Location: salt.DefaultLocation,
 	})

@@ -1,12 +1,13 @@
 package josejwt_test
 
 import (
+	"context"
 	"log"
 	"testing"
 	"time"
 
 	"github.com/hashicorp/vault/logical"
-	jwt "github.com/wenisman/vault_jwt_plugin/plugin"
+	jwt "github.com/wenisman/vault_jwt_plugin/JWT-Plugin/plugin"
 )
 
 func Test_Backend_Impl(t *testing.T) {
@@ -26,7 +27,7 @@ func getTestBackend(t *testing.T) (logical.Backend, logical.Storage) {
 	config := logical.TestBackendConfig()
 	config.StorageView = &logical.InmemStorage{}
 
-	b, err := jwt.Factory(config)
+	b, err := jwt.Factory(context.Background(), config)
 	if err != nil {
 		t.Fatalf("unable to create backend: %v", err)
 	}

@@ -1,6 +1,7 @@
 package josejwt_test
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"strings"
@@ -159,7 +160,7 @@ func createToken(req *logical.Request, b logical.Backend, t *testing.T, roleName
 	req.Data = data
 
 	start := time.Now()
-	resp, err := b.HandleRequest(req)
+	resp, err := b.HandleRequest(context.Background(), req)
 	fmt.Printf("Issue Token took %s\n", time.Since(start))
 
 	return resp, err
@@ -177,7 +178,7 @@ func validateToken(req *logical.Request, b logical.Backend, t *testing.T, client
 
 	start := time.Now()
 
-	resp, err := b.HandleRequest(req)
+	resp, err := b.HandleRequest(context.Background(), req)
 	fmt.Printf("Validate Token took %s\n", time.Since(start))
 	if err != nil || (resp != nil && resp.IsError()) {
 		if err.Error() != "token is expired" {
@@ -208,7 +209,7 @@ func createSampleRole(b logical.Backend, storage logical.Storage, roleName strin
 		DisplayName: fmt.Sprintf("test-%s", roleName),
 	}
 
-	return b.HandleRequest(req)
+	return b.HandleRequest(context.Background(), req)
 }
 
 func createClaim(b logical.Backend, storage logical.Storage, name string, claims map[string]string) (*logical.Response, error) {
@@ -224,5 +225,5 @@ func createClaim(b logical.Backend, storage logical.Storage, name string, claims
 		Data:      data,
 	}
 
-	return b.HandleRequest(req)
+	return b.HandleRequest(context.Background(), req)
 }

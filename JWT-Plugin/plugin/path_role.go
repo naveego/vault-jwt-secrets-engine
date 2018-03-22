@@ -121,7 +121,7 @@ func (backend *JwtBackend) createRole(ctx context.Context, req *logical.Request,
 	}
 
 	var secretEntry *secretStorageEntry
-	salt, _ := backend.Salt()
+	salt, _ := backend.Salt(ctx)
 
 	if role == nil {
 		role = new(RoleStorageEntry)

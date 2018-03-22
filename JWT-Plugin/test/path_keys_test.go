@@ -1,6 +1,7 @@
 package josejwt_test
 
 import (
+	"context"
 	"fmt"
 	"testing"
 	"time"
@@ -8,7 +9,7 @@ import (
 	"github.com/mitchellh/mapstructure"
 
 	"github.com/hashicorp/vault/logical"
-	jwt "github.com/wenisman/vault_jwt_plugin/plugin"
+	jwt "github.com/wenisman/vault_jwt_plugin/JWT-Plugin/plugin"
 )
 
 func TestCRUDKey(t *testing.T) {
@@ -27,7 +28,7 @@ func TestCRUDKey(t *testing.T) {
 		Data:      data,
 	}
 
-	resp, err := b.HandleRequest(req)
+	resp, err := b.HandleRequest(context.Background(), req)
 	if err != nil || (resp != nil && resp.IsError()) {
 		t.Fatalf("err:%s resp:%#v\n", err, resp)
 	}
@@ -37,7 +38,7 @@ func TestCRUDKey(t *testing.T) {
 	startTime = time.Now()
 
 	req.Operation = logical.ReadOperation
-	resp, err = b.HandleRequest(req)
+	resp, err = b.HandleRequest(context.Background(), req)
 	if err != nil || (resp != nil && resp.IsError()) {
 		t.Fatalf("err:%s resp:%#v\n", err, resp)
 	}

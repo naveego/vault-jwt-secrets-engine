@@ -40,7 +40,7 @@ func (backend *JwtBackend) authLoginLocal(ctx context.Context, req *logical.Requ
 		return logical.ErrorResponse(fmt.Sprintf("Error Retrieving secrets for role '%s'", roleName)), nil
 	}
 
-	salt, _ := backend.Salt()
+	salt, _ := backend.Salt(ctx)
 	passwordHmac := salt.GetHMAC(password)
 	if passwordHmac != secretEntry.Password {
 		return logical.ErrorResponse("Access Denied"), nil

@@ -1,6 +1,7 @@
 package josejwt_test
 
 import (
+	"context"
 	"fmt"
 	"testing"
 	"time"
@@ -8,7 +9,7 @@ import (
 	"github.com/mitchellh/mapstructure"
 
 	"github.com/hashicorp/vault/logical"
-	jwt "github.com/wenisman/vault_jwt_plugin/plugin"
+	jwt "github.com/wenisman/vault_jwt_plugin/JWT-Plugin/plugin"
 )
 
 func TestCRUDRole(t *testing.T) {
@@ -61,7 +62,7 @@ func createRole(req *logical.Request, b logical.Backend, t *testing.T, roleName 
 	req.Data = data
 
 	startTime := time.Now()
-	resp, err := b.HandleRequest(req)
+	resp, err := b.HandleRequest(context.Background(), req)
 	fmt.Printf("'Test create role' took %s\n", time.Since(startTime))
 	return resp, err
 }
@@ -76,7 +77,7 @@ func getRole(req *logical.Request, b logical.Backend, t *testing.T, roleName str
 	req.Data = data
 
 	startTime := time.Now()
-	resp, err := b.HandleRequest(req)
+	resp, err := b.HandleRequest(context.Background(), req)
 	fmt.Printf("'Test get role' took %s\n", time.Since(startTime))
 	return resp, err
 }
@@ -91,7 +92,7 @@ func deleteRole(req *logical.Request, b logical.Backend, t *testing.T, roleName 
 	req.Data = data
 
 	startTime := time.Now()
-	resp, err := b.HandleRequest(req)
+	resp, err := b.HandleRequest(context.Background(), req)
 	fmt.Printf("'Test delete role' took %s\n", time.Since(startTime))
 	return resp, err
 }
